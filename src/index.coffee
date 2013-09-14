@@ -9,6 +9,7 @@ class SpriteGenerator
 		@options = _.extend
 			images: './images/icons',
 			sprites: './images/sprites',
+			url: '/images/sprites/',
 			debug: true
 		, options
 
@@ -30,7 +31,10 @@ class SpriteGenerator
 			@
 
 	onReady: (callback) ->
-		@onReadyCallback = callback
+		if !@_readyState
+			@onReadyCallback = callback
+		else
+			callback()
 
 	_log: (message) ->
 		if @options.debug
@@ -103,22 +107,21 @@ class SpriteGenerator
 	_checkCallReady: ->
 		clearTimeout @_timerReady
 		@_timerReady = setTimeout () =>
-			@onReadyCallback()
+			@onReadyCallback && @onReadyCallback()
+			@_readyState = true;
 		, 200
 
 	_onStylusRender: (css, callback) =>
-		console.log css
-		callback null, css.replace(/'{{SPRITE:([./a-zA-Z]*)POSITION:(\d+)}}'/g, 'background-image: url("$1");\nbackground-position:0 $2px')
+		cssString = css.replace /'{{NOT_FOUND}}'/g, ''
+		cssString = cssString.replace(/'{{SPRITE:([./a-zA-Z]*)POSITION:(\d+)}}'/g, 'background-image: url($1);\nbackground-position:0 $2px')
+		callback null, cssString
 
 	_defineMixins: ->
 		@stylus.define 'sprite', (sprite, image) =>
 			if @_sprites[sprite] && @_sprites[sprite][image]
-				"{{SPRITE:#{@options.sprites}/#{sprite}.pngPOSITION:#{@_sprites[sprite][image].position}}}"
+				"{{SPRITE:#{@options.url}/#{sprite}.pngPOSITION:#{@_sprites[sprite][image].position}}}"
 			else 
 				'{{NOT_FOUND}}'
-			
-
-			# @_sprites[sprite][image].position
 
 module.exports = SpriteGenerator
 # module.exports = (options) ->
