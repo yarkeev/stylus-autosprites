@@ -1,0 +1,30 @@
+{
+  "name": "stylus-autosprites",
+  "description": "Generate sprite for preprocessor stylus",
+  "version": "0.0.1",
+  "author": {
+    "name": "Yarkeev Denis",
+    "email": "array07@gmail.com"
+  },
+  "keywords": [
+    "css",
+    "parser",
+    "style",
+    "stylesheets",
+    "sprite"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "github.com/yarkeev/stylus-autosprites"
+  },
+  "main": "lib/index.js",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "underscore": ">=1.0.0",
+    "gm": ">=1.12.2"
+  },
+  "readme": "",
+  "readmeFilename": "Readme.md"
+}
